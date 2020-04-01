@@ -7,11 +7,11 @@ from jax import ops
 from jax.experimental import loops
 
 
-@functools.partial(jax.jit, static_argnums=(0,))
+@functools.partial(jax.jit, static_argnums=(0,2,3))
 def runge_kutta_4(f: Callable[[np.ndarray, np.ndarray], np.ndarray], 
                   y0: np.ndarray,
-                  step_size=0.01,
-                  num_steps=1000):
+                  step_size,
+                  num_steps):
     with loops.Scope() as s:
         s.res = np.empty(num_steps)
         s.y = y0
@@ -26,6 +26,6 @@ def runge_kutta_4(f: Callable[[np.ndarray, np.ndarray], np.ndarray],
         return s.res
 
 if __name__ == "__main__":
-    rkap = runge_kutta_4(lambda t, y: - 2 * y , np.array(3.), step_size=0.05)
-    ex = np.array([3*np.exp(-2*(i+1)*0.05) for i in range(1000)])
+    rkap = runge_kutta_4(lambda t, y: - 2 * y , np.array(3.), step_size=0.005)
+    ex = np.array([3*np.exp(-2*(i+1)*0.005) for i in range(1000)])
     print(np.max(rkap - ex))
