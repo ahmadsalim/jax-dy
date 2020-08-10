@@ -56,6 +56,6 @@ if __name__ == "__main__":
     num_warmup = 2500
     num_samples = 10000
     kernel = NUTS(seir_model)
-    mcmc = MCMC(kernel, num_warmup, num_samples, num_chains=2)
+    mcmc = MCMC(kernel, num_warmup, num_samples)
     mcmc.run(rngkey_, initial_seir_state, num_days, infection_data, recovery_data, step_size=step_size)
     mcmc.print_summary()
